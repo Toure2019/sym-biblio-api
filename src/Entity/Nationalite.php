@@ -10,7 +10,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NationaliteRepository")
- * @ApiResource()
+ * @ApiResource(
+ *      attributes = {
+ *          "order" = {
+ *              "libelle": "ASC"
+ *          }
+ *      }
+ * )
  */
 class Nationalite
 {
@@ -18,13 +24,11 @@ class Nationalite
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"listAuteurFull", "listAuteursimple"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listAuteurFull", "listAuteursimple"})
      */
     private $libelle;
 

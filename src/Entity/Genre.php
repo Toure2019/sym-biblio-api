@@ -14,17 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GenreRepository")
  * @ApiResource(
- *      collectionOperations={"get"},
- *      itemOperations={
- *          "get_simple"={
- *              "method"="GET",
- *              "path"="/genres/{id}/simple",
- *              "normalization_context"={"groups"={"listGenreSimple"}}
- *          },
- *          "get_full"={
- *              "method"="GET",
- *              "path"="/genres/{id}/full",
- *              "normalization_context"={"groups"={"listGenreFull"}}
+ *      attributes = {
+ *          "order" = {
+ *              "libelle": "ASC"
  *          }
  *      }
  * )
@@ -39,13 +31,11 @@ class Genre
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"listGenreSimple", "listGenreFull"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listGenreSimple", "listGenreFull"})
      * @Assert\Length(
      *  min = 2, max = 50,
      * minMessage = "Le libelle doit contenir au moins {{ limit }} char",
@@ -56,7 +46,6 @@ class Genre
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Livre", mappedBy="genre")
-     * @Groups({"listGenreFull"})
      * @ApiSubresource()
      */
     private $livres;

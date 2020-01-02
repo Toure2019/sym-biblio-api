@@ -3,9 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LivreRepository")
@@ -17,6 +22,40 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *      }
  * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties = {
+ *          "titre" : "ipartial",
+ *          "auteur" : "exact"
+ *      }
+ * )
+ * @ApiFilter(
+ *      RangeFilter::class,
+ *      properties = {
+ *          "prix"
+ *      }
+ * )
+ * @ApiFilter(
+ *      OrderFilter::class,
+ *      properties = {
+ *          "titre"="desc",
+ *          "prix",
+ *          "auteur.nom"="asc"
+ *      }
+ * )
+ * @ApiFilter(
+ *      PropertyFilter::class,
+ *      arguments = {
+ *          "parameterName": "properties",
+ *          "overrideDefaultProperties": false,
+ *          "whitelist": {
+ *              "isbn",
+ *              "titre",
+ *              "prix"
+ *          }
+ *      }
+ * )
+ * 
  */
 class Livre
 {
